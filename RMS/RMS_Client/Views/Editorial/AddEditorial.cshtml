@@ -1,0 +1,48 @@
+﻿@model RMS_Client.Models.Editorial;
+@{
+    ViewData["Title"] = "Add Editorial";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Editorial</h1>
+
+    @using (Html.BeginForm("AddEditorial", "Editorial", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        <div class="form-group">
+            <label>Activity Description</label>
+            <textarea class="form-control" name="activity" id="activity"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Organisation/Journal/Conference</label>
+            <input type="text" class="form-control" name="publication" id="publication" />
+        </div>
+
+        <div class="form-group">
+            <label>Organisation's URL</label>
+            <input type="text" class="form-control" name="url" id="url" value="http://" />
+        </div>
+
+        <div class="form-group">
+            <label>Date of Activity</label>
+            <input type="text" class="form-control" name="date" id="date" placeholder="DD/MM/YYYY" />
+        </div>
+
+            <input type="hidden" class="form-control" name="save" id="save" value="true" />
+
+        <div class="form-group">
+            <button type="submit" value="Submit" class="btn btn-primary btn-block">
+                <span class="fa fa-plus"></span>
+                A D D
+            </button>
+        </div>
+
+    </form>
+</div>
+    }
+
+</div>
+

@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Book Chapters Page";
+    List<BookChapter> bookChapters = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Book Chapters</h1>
+
+   @foreach(BookChapter bk in bookChapters)
+   {
+       @*show sting version of project details*@
+       <p> @bk.ToString() </p>
+       <br/>
+   }
+
+</div>
+

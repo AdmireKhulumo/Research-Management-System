@@ -1,0 +1,46 @@
+﻿@{
+    //get data from the viewdata component
+    List<Employee> employees =  (List<Employee>)this.ViewData["employees"];
+    string id1 = (string)ViewData["id1"];
+    string id2 = (string)ViewData["id2"];
+    string type = (string)ViewData["type"];
+    string str = id1 + id2 + type; ;
+    string colId = String.Concat(str.Where(c => !Char.IsWhiteSpace(c)));
+}
+
+<div>
+    @using (Html.BeginForm("AddAuthor", "Project", FormMethod.Post))
+    {
+
+        <form>
+            <div class="row">
+
+                <a class="col-md-12" data-toggle="collapse"  href="#@colId" role="button" aria-expanded="false" aria-controls="@colId">
+                    Add Author
+                </a>
+
+                @*id is dynamically profuced to ensure uniqueness and not controlling all drop downs at once*@
+                <div class="collapse row" id="@colId">
+                    <div class="form-group col-md-10">
+                        <select class="form-control" name="empId" id="empId">
+                            @foreach (Employee emp in employees)
+                            {
+                                <option value=@emp.EmpId>@emp.Fname @emp.Sname, @emp.Department</option>
+                            }
+                        </select>
+                    </div>
+
+                    @*hidden information needed for post, supplied by caller*@
+                    <input type="hidden" value="@id1" name="id1" id="id1" />
+                    <input type="hidden" value="@id2" name="id2" id="id2" />
+                    <input type="hidden" value="@type" name="type" id="type" />
+
+                    <div class="form-group col-md-2">
+                        <button type="submit" value="Submit" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    }
+</div>

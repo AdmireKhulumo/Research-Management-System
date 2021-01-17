@@ -1,0 +1,66 @@
+﻿@model RMS_Client.Models.Project;
+@{
+    ViewData["Title"] = "Add Project";
+    List<Employee> emps = await new APIRequest().getEmployees();
+    List<Funder> funders = await new APIRequest().getFunders();
+
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Project</h1>
+
+    @using (Html.BeginForm("AddProject", "Project", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" class="form-control" name="title" id="title" />
+        </div>
+
+        <div class="form-group">
+            <label>Project Leader</label>
+            <select class="form-control" name="leader" id="leader">
+                @foreach (Employee emp in emps)
+                {
+                    <option value=@emp.EmpId>@emp.Fname @emp.Sname, @emp.Department</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label >Funding Source</label>
+            <select class="form-control" name="fsource" id="fsource">
+                <option value="BIUST">BIUST</option>
+                <option value="Private">Private</option>
+                <option value="Public">Public</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label >Funding Amount</label>
+            <input type="text" class="form-control" name="famount" id="famount" />
+        </div>
+
+        <div class="form-group">
+            <label >Select Funder</label>
+            <select class="form-control" name="fId" id="fId">
+                @foreach (Funder fu in funders)
+                {
+                    <option value=@fu.FId>@fu.Name, @fu.Organisation</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" value="Submit"><span class="fa fa-plus"></span> A D D</button>
+        </div>
+    </form>
+</div>
+    }
+
+</div>
+

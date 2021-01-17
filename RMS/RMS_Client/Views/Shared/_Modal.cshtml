@@ -1,0 +1,28 @@
+﻿@{ 
+    string message = (string)this.ViewData["message"];
+}
+<!-- Modal -->
+<div class="modal fade" id="confirmm" tabindex="-1" aria-labelledby="confirmm" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <h5>@message</h5>
+            </div>
+
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                    <button type="submit" value="Submit" class="btn badge-pill badge-warning">CONFIRM</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

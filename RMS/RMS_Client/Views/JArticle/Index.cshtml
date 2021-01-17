@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "JArticles Page";
+    List<JArticle> jArticles = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">JArticles</h1>
+
+   @foreach(JArticle ja in jArticles)
+   {
+       @*show sting version of project details*@
+       <p> @ja.ToString() </p>
+       <br/>
+   }
+
+</div>
+

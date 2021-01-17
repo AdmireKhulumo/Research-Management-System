@@ -1,0 +1,123 @@
+﻿@{
+    //get data from the viewdata component
+    Project p = (Project)this.ViewData["project"];
+    string basic = $"basic{p.PId}";
+    string jaId = $"ja{p.PId}";
+    string caId = $"ca{p.PId}";
+    string bkId = $"bk{p.PId}";
+}
+
+<div class="card">
+    <h6 class="card-header"> @p.Title</h6>
+
+    <div class="card-body column">
+
+        @*Basic Details*@
+        <a data-toggle="collapse" href="#@basic" aria-expanded="false" aria-controls="@basic">
+            <h6>Basic Details<img src="/images/down.svg" width="16" height="16" alt="down image"> </h6>
+        </a>
+        <div class="collapse" id="@basic">
+            <p>Project ID: @p.PId</p>
+            <p>Leader: @p.LeadDetails.Fname.Substring(0, 1). @p.LeadDetails.Sname</p>
+            <p>Funding Source: @p.Fsource</p>
+            <p>Funding Amount: @p.Famout</p>
+            @{  string fuStr = "";
+                foreach (Funder fu in p.Funders)
+                {
+                    fuStr += $"{fu.Name} ({fu.Organisation}), ";
+                }
+               }
+            <p>Funders: @fuStr </p>
+        </div>
+
+
+        @*Journal Articles*@
+        <a data-toggle="collapse" href="#@jaId" aria-expanded="false" aria-controls="@jaId">
+            <h6>Journal Articles<img src="/images/down.svg" width="16" height="16" alt="down image"> </h6>
+        </a>
+        <div class="collapse" id="@jaId">
+            @if (p.JArticles.Count > 0)
+            {
+                int i = 1;
+                foreach (JArticle ja in p.JArticles)
+                {
+                    //find authors
+                    List<Employee> authors = await new APIRequest().getAuthors(ja.Jname, ja.Title, "jArticle");
+                    //loop through result, create string to display
+                    string authStr = "";
+                    foreach (Employee auth in authors)
+                    {
+                        authStr += $"{auth.Fname.Substring(0, 1)}. {auth.Sname}, ";
+                    }
+                    <p>@i. <em>@ja.Title</em>, @ja.Jname, authors: @authStr </p>
+
+                    i++;
+                }
+            }
+            else
+            {
+                <p>No Journal Articles.</p>
+            }
+        </div>
+
+        @*Conference Articles*@
+        <a data-toggle="collapse" href="#@caId" aria-expanded="false" aria-controls="@caId">
+            <h6>Conference Articles<img src="/images/down.svg" width="16" height="16" alt="down image"> </h6>
+        </a>
+        <div class="collapse" id="@caId">
+            @if (p.CArticles.Count > 0)
+            {
+                int i = 1;
+                foreach (CArticle ca in p.CArticles)
+                {
+                    //find authors
+                    List<Employee> authors = await new APIRequest().getAuthors(ca.Cname, ca.Title, "cArticle");
+                    //loop through result, create string to display
+                    string authStr = "";
+                    foreach (Employee auth in authors)
+                    {
+                        authStr += $"{auth.Fname.Substring(0, 1)}. {auth.Sname}, ";
+                    }
+                    <p>@i. <em>@ca.Title</em>, @ca.Cname, authors: @authStr </p>
+
+                    i++;
+                }
+            }
+            else
+            {
+                <p>No Conference Articles.</p>
+            }
+        </div>
+
+        @*Book Chapters*@
+        <a data-toggle="collapse" href="#@bkId" aria-expanded="false" aria-controls="@bkId">
+            <h6>Book Chapters<img src="/images/down.svg" width="16" height="16" alt="down image"> </h6>
+        </a>
+        <div class="collapse" id="@bkId">
+            @if (p.BookChapters.Count > 0)
+            {
+                int i = 1;
+                foreach (BookChapter bk in p.BookChapters)
+                {
+                    //find authors
+                    List<Employee> authors = await new APIRequest().getAuthors(bk.BkTitle, bk.ChTitle, "bookChapter");
+                    //loop through result, create string to display
+                    string authStr = "";
+                    foreach (Employee auth in authors)
+                    {
+                        authStr += $"{auth.Fname.Substring(0, 1)}. {auth.Sname}, ";
+                    }
+                    <p>@i. <em>@bk.ChTitle</em>, @bk.BkTitle, authors: @authStr </p>
+
+                    i++;
+                }
+            }
+            else
+            {
+                <p>No Book Chapters.</p>
+            }
+        </div>
+
+    </div>
+</div>
+

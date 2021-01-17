@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "My Projects";
+    List<Project> projects = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">My Projects</h1>
+
+    @{
+        if (projects.Count == 0)
+        {
+            //there are no projects done by this user
+            <h3>No Projects Yet.</h3>
+        }
+        else
+        {
+            //loop through all projects and represent
+            foreach (Project p in projects)
+            {
+                //create dynamic modal name
+                string mId = $"del_{p.PId}";
+                mId = mId.Replace(" ", string.Empty);
+
+                <div class="card text-center">
+                    <div class="card-header">
+
+                        <h4 class="col-md-12">@p.Title</h4>
+
+                        <a class="badge badge-pill badge-warning text-white" href="@Url.Action("EditProject", "Project", new { pId = p.PId, title = p.Title, leader = p.Leader, fsource = p.Fsource, famount = p.Famout } )">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                            </svg>
+                            EDIT
+                        </a>
+
+                        <a class="badge badge-pill badge-danger" href="#@mId" data-toggle="modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                            DELETE
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+                        @*<h5 class="card-title">Special title treatment</h5>*@
+                        <h5>Project ID: @p.PId</h5>
+                        <br />
+                        <h6>Funding Source: @p.Fsource</h6>
+                        <br />
+                        <h6>Funding Amount: P @p.Famout</h6>
+                        <br />
+
+
+                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Project", new { pId = p.PId, title = p.Title, leader = p.Leader, fsource = p.Fsource, famount = p.Famout })'">
+                            View Details
+                            <span class="fa fa-chevron-right"></span>
+                            <span class="fa fa-chevron-right"></span>
+                        </button>
+
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        Leader: @p.LeadDetails.Fname @p.LeadDetails.Sname, @p.LeadDetails.Qualification
+                    </div>
+                </div>
+
+                <br />
+
+                @*Modal to confirm delete*@
+                <!-- Button trigger modal -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="@mId" tabindex="-1" aria-labelledby="@mId" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <h5>Are you sure you want to delete the project "<em>@p.Title</em>" ?</h5>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "Project", new { pId=p.PId })'">DELETE</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+    }
+
+<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AddProject", "Project")'">
+    <span class="fa fa-plus"></span>
+    Add Project
+</button>
+
+</div>
+
+

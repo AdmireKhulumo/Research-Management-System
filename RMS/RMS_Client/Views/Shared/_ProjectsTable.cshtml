@@ -1,0 +1,34 @@
+﻿@{
+    //get data from the viewdata component
+    List<Project> projects = (List<Project>)this.ViewData["projects"];
+}
+
+    <table class="table table-hover table-dark table-bordered table-responsive">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Project ID</th>
+                <th scope="col">Leader</th>
+                <th scope="col">Title</th>
+                <th scope="col">Funding Source</th>
+                <th scope="col">Funding Amount</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @{
+                foreach (Project p in projects)
+                {
+                    <tr>
+                        @*<th scope="row">1</th>*@
+                        <td><strong>@p.PId</strong></td>
+                        <td>@p.LeadDetails.Fname @p.LeadDetails.Sname, @p.LeadDetails.Department</td>
+                        <td>@p.Title</td>
+                        <td>@p.Fsource</td>
+                        <td>@p.Famout</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>

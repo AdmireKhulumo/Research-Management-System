@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RMS_Client;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+
+    @*Show this when a user is logged in*@
+    @if (SignInManager.IsSignedIn(User))
+    {
+        string name;
+        //check if user is admin
+        if (User.Identity.Name == "admin@admin.com")
+        {
+            //set name to admin
+            name = "Admin";
+            //set current user properties
+            Employee.user = new Employee();
+            Employee.user.Fname = "Admin";
+            Employee.user.Email = "admin@admin.com";
+        }
+        else
+        {
+            //regular employee, get details from database
+            //get user details
+            List<Employee> emps = await new APIRequest().getEmployees(User.Identity.Name);
+            Employee emp = emps[0];
+
+            //set static employee user variable to this user in the employee object
+            Employee.user = emp;
+            //set name to his/her first name
+            name = emp.Fname;
+        }
+
+
+        @*Show User's login first name*@
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <img src="/icons/svg/person.svg" width="16" height="16" alt="logout image">
+                Hi, @name
+            </a>
+        </li>
+
+        @*Logout button*@
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">
+                    Logout
+                    <img src="/images/sign-out.svg" width="16" height="16" alt="logout image">
+                </button>
+            </form>
+            
+        </li>
+    }
+
+    @*When user is not signed in...*@
+    else
+    {
+        @*Register button*@
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+
+        @*Login button*@
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

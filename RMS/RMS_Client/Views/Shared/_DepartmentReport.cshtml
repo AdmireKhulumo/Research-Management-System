@@ -1,0 +1,264 @@
+﻿@{
+    //get data from the viewdata component
+    List<Employee> employees = (List<Employee>)this.ViewData["employees"];
+    List<Project> projects = (List<Project>)this.ViewData["projects"];
+    List<Editorial> editorials = (List<Editorial>)this.ViewData["editorials"];
+    int num = (int)ViewData["num"];
+    string dept = (string)this.ViewData["dept"];
+
+    //fix up ids that will always be unique
+    string dId = dept.Replace(" ", string.Empty);
+    string emp = $"{dId}_employee";
+    string emp_tb = $"{emp}_table";
+    string emp_st = $"{emp}_stats";
+    string proj = $"{dId}_project";
+    string proj_tb = $"{proj}_table";
+    string proj_det = $"{proj}_details";
+    string proj_st = $"{proj}_stats";
+    string edi = $"{dId}_editorial";
+    string edi_tb = $"{edi}_table";
+    string edi_st = $"{edi}_stats";
+}
+
+    <a data-toggle="collapse" href="#@dId" aria-expanded="false" aria-controls="@dId">
+        <h4>@num. @dept <img src="/images/down.svg" width="30" height="30" alt="down image"></h4>
+    </a>
+    <div class="collapse column" id="@dId">
+
+        @*EMPLOYEES*@
+        <a data-toggle="collapse" href="#@emp" aria-expanded="false" aria-controls="@emp">
+            <h5> --> Employees <img src="/images/down.svg" width="25" height="25" alt="down image"> </h5>
+        </a>
+        <div class="collapse" id="@emp">
+
+            @*Employees Table*@
+            <a data-toggle="collapse" href="#@emp_tb" aria-expanded="false" aria-controls="@emp_tb">
+                <h6> -----> Employees Table <img src="/images/down.svg" width="20" height="20" alt="down image"> </h6>
+            </a>
+            <div class="collapse" id="@emp_tb">
+                @*Filter employees to get employees in cs department only, then call partial, supplying employees list*@
+                @{ List<Employee> employees_dept = employees.FindAll(emp => emp.Department == dept);
+                    ViewData["employees"] = employees_dept;
+                    <partial name="_EmployeesTable" view-data="ViewData" />
+                }
+            </div>
+
+            @*Employees Stats*@
+            <a data-toggle="collapse" href="#@emp_st" aria-expanded="false" aria-controls="@emp_st">
+                <h6> -----> Statistics<img src="/images/down.svg" width="25" height="25" alt="down image"> </h6>
+            </a>
+            <div class="collapse" id="@emp_st">
+                @{
+                    //calculations
+                    //number of lecturers
+                    int lect = employees_dept.FindAll(e => e.Position == "Lecturer").Count;
+                    //num of senior lecturers
+                    int slect = employees_dept.FindAll(e => e.Position == "Senior Lecturer").Count;
+                    //number of professors
+                    int prof = employees_dept.FindAll(e => e.Position == "Professor").Count;
+                    //number of MSc holders
+                    int msc = employees_dept.FindAll(e => e.Qualification.StartsWith("MSc")).Count;
+                    //number of PhD holder
+                    int phd = employees_dept.FindAll(e => e.Qualification.StartsWith("PhD")).Count;
+                    //total employees
+                    int total = employees_dept.Count;
+                }
+
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <h5 class="card-header">Employee Statistics</h5>
+                    <div class="card-body">
+
+                        <h6><strong>Staff Qualifications</strong></h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>MSc holders: </td>
+                                    <td>@msc</td>
+                                </tr>
+                                <tr>
+                                    <td>PhD holders: </td>
+                                    <td>@phd</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h6><strong>Staff Positions</strong></h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Lecturers: </td>
+                                    <td>@lect</td>
+                                </tr>
+                                <tr>
+                                    <td>Senior Lecturers: </td>
+                                    <td>@slect</td>
+                                </tr>
+                                <tr>
+                                    <td>Professors: </td>
+                                    <td>@prof</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Staff: </strong></td>
+                                    <td><strong>@total</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        @*PROJECTS*@
+        <a data-toggle="collapse" href="#@proj" aria-expanded="false" aria-controls="@proj">
+            <h5> --> Projects <img src="/images/down.svg" width="25" height="25" alt="down image"></h5>
+        </a>
+        <div class="collapse" id="@proj">
+
+            @*Projects Table*@
+            <a data-toggle="collapse" href="#@proj_tb" aria-expanded="false" aria-controls="@proj_tb">
+                <h6> -----> Projects Table<img src="/images/down.svg" width="20" height="20" alt="down image"> </h6>
+            </a>
+            <div class="collapse" id="@proj_tb">
+                @*Filter employees to get employees in cs department only, then call partial, supplying employees list*@
+                @{ List<Project> projects_dept = projects.FindAll(p => p.LeadDetails.Department == dept);
+                    ViewData["projects"] = projects_dept;
+                    <partial name="_ProjectsTable" view-data="ViewData" />
+                }
+            </div>
+
+            @*Projects Details*@
+            <a data-toggle="collapse" href="#@proj_det" aria-expanded="false" aria-controls="@proj_det">
+                <h6> -----> Project Details<img src="/images/down.svg" width="20" height="20" alt="down image"> </h6>
+            </a>
+            <div class="collapse row" id="@proj_det">
+                @foreach (Project p in projects_dept)
+                {
+                    ViewData["project"] = p;
+                    //call partial to display details
+                    <div class="col-md-4">
+                        <partial name="_ProjectDetails" view-data="ViewData" />
+                    </div>
+                }
+            </div>
+
+            @*Projects Stats*@
+            <a data-toggle="collapse" href="#@proj_st" aria-expanded="false" aria-controls="@proj_st">
+                <h6> -----> Statistics<img src="/images/down.svg" width="25" height="25" alt="down image"> </h6>
+            </a>
+            <div class="collapse" id="@proj_st">
+                @*Count publications, total funds by looping through all department projects and summing*@
+                @{int[] sum_pubs = { 0, 0, 0 };
+                    double sum_funds = 0;
+                    foreach (Project p in projects_dept)
+                    {
+                        //add jArticles
+                        sum_pubs[0] += p.JArticles.Count;
+                        //add cArticles
+                        sum_pubs[1] += p.CArticles.Count;
+                        //add book chapters
+                        sum_pubs[2] += p.BookChapters.Count;
+                        //add funds
+                        sum_funds += p.Famout;
+                    }
+                    //total number of publications
+                    int total_pubs = sum_pubs[0] + sum_pubs[1] + sum_pubs[2];
+                }
+
+                <div class="card bg-light mb-3" style="max-width: 21rem;">
+                    <h5 class="card-header">Project Statistics</h5>
+                    <div class="card-body">
+
+                        <h6><strong>Publications</strong></h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Journal Articles: </td>
+                                    <td>@sum_pubs[0]</td>
+                                </tr>
+                                <tr>
+                                    <td>Conference Articles: </td>
+                                    <td>@sum_pubs[1]</td>
+                                </tr>
+                                <tr>
+                                    <td>Book Chapters: </td>
+                                    <td>@sum_pubs[2]</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Publications: </strong></td>
+                                    <td><strong>@total_pubs</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Number of Projects: </strong></td>
+                                    <td><strong>@projects_dept.Count</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Funding: </strong></td>
+                                    <td><strong>P @sum_funds</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        @*EDITORIALS*@
+        <a data-toggle="collapse" href="#@edi" aria-expanded="false" aria-controls="@edi">
+            <h5> --> Editorials <img src="/images/down.svg" width="25" height="25" alt="down image"></h5>
+        </a>
+        <div class="collapse" id="@edi">
+            @{//Filter editorials using doer's department -- just use first doer on the list
+                List<Editorial> editorials_dept = new List<Editorial>();
+                foreach (Editorial ed in editorials)
+                {
+                    if (ed.Doers.FindAll(emp => emp.Department == dept).Count > 0)
+                    {
+                        editorials_dept.Add(ed);
+                    }
+                }
+
+                //if there are editorials, display subtopics
+                if (editorials_dept.Count > 0)
+                {
+                    @*Editorials Table*@
+                    <a data-toggle="collapse" href="#@edi_tb" aria-expanded="false" aria-controls="@edi_tb">
+                        <h6> -----> Editorials Table <img src="/images/down.svg" width="20" height="20" alt="down image"> </h6>
+                    </a>
+                    <div class="collapse" id="@edi_tb">
+
+                        @{ViewData["editorials"] = editorials_dept;
+                            <partial name="_EditorialsTable" view-data="ViewData" />
+                        }
+                    </div>
+
+                    @*Editorials Stats*@
+                    <a data-toggle="collapse" href="#@edi_st" aria-expanded="false" aria-controls="@edi_st">
+                        <h6> -----> Statistics<img src="/images/down.svg" width="25" height="25" alt="down image"> </h6>
+                    </a>
+                    <div class="collapse" id="@edi_st">
+                        <h6><strong>Total Editorials: @editorials_dept.Count</strong></h6>
+                    </div>
+                }
+                else
+                {
+                    <h6>No recorded editorials/reviews.</h6>
+                }
+            }
+
+
+        </div>
+
+
+    </div>
+<br/>

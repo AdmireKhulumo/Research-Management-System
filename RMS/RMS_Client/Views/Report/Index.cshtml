@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Reports Page";
+    List<Employee> employees = ViewBag.Employees;
+    List<Project> projects = ViewBag.Projects;
+    List<Editorial> editorials = ViewBag.Editorials;
+}
+
+   
+<div class="container column">
+    <h1 class="display-4">Research Report</h1>
+
+    @*EMPLOYEES SECTION*@
+
+    <h2><img src="/images/person.svg" width="25" height="25" alt="person image"> <u>Employees</u></h2>
+    @*Employees Table Toggle*@
+    <a data-toggle="collapse" href="#employeesTable" aria-expanded="false" aria-controls="employeesTable">
+        <h5>All Employees <img src="/images/down.svg" width="30" height="30" alt="down image"></h5>
+    </a>
+    @*Employees Table*@
+    <div class="collapse" id="employeesTable">
+        @{ViewData["employees"] = employees;}
+        <partial name="_EmployeesTable" view-data='ViewData' />
+    </div>
+
+
+    <br/>
+    @*DEPARTMENTAL REPORTS*@
+    <h2><img src="/images/clipboard.svg" width="25" height="25" alt="person image"> <u>Departmental Reports</u></h2>
+    @{//set view data for all subsequent departments
+        ViewData["employees"] = employees;
+        ViewData["projects"] = projects;
+        ViewData["editorials"] = editorials;
+    }
+
+    <br/>
+    <h3><img src="/images/thermometer.svg" width="25" height="25" alt="person image"> Faculty of Science</h3>
+    <br/>
+    @*COMPUTER SCIENCE*@
+    @{
+        ViewData["dept"] = "Computer Science and Information Systems";
+        ViewData["num"] = 1;
+        <div>
+            <partial name="_DepartmentReport" view-data="ViewData" />
+        </div>
+    }
+
+    @*FORENSIC SCIENCE*@
+    @{
+        ViewData["dept"] = "Forensic Science";
+        ViewData["num"] = 2;
+        <div>
+            <partial name="_DepartmentReport" view-data="ViewData" />
+        </div>
+    }
+
+    <h3><img src="/images/cpu.svg" width="25" height="25" alt="person image"> Faculty of Engineering</h3>
+    <br/>
+    @*MECHANICAL ENGINEERING*@
+    @{
+        ViewData["dept"] = "Mechanical Engineering";
+        ViewData["num"] = 3;
+        <div>
+            <partial name="_DepartmentReport" view-data="ViewData" />
+        </div>
+    }
+
+</div>
+
+
+

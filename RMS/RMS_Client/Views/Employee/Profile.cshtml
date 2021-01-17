@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "My Profile";
+
+    Employee emp = Employee.user;
+
+    //get photo url
+    string userUrl = emp.Photo;
+}
+
+<div class="text-center">
+    <h1 class="display-4">My Profile</h1>
+    <div class="container row">
+
+        @*Sidebar stuff*@
+        <div class="col-md-4">
+            <div class="card bg-light text-center ">
+                <img src="@userUrl" class="card-img-top rounded-circle img-fluid" alt="user image" width="300" height="300">
+                <div class="card-body column">
+
+                    <div>
+                        <a class="btn badge-warning col-md-8" href="@Url.Action("EditEmployee", "Employee", new { fname=emp.Fname, sname=emp.Sname, department=emp.Department, position=emp.Position, qualification=emp.Qualification, interests=emp.Interests, phone=emp.Phone, email=emp.Email, empId=emp.EmpId })">
+                            <img src="/images/edit.svg" width="16" height="16" alt="profile image" style="color:white">
+                            EDIT
+                        </a>
+                        <br />
+                    </div>
+
+                    <div class="row">
+                        <h6 class="col-md-5">First Name: </h6>
+                        <h5 class="col-md-7">@emp.Fname</h5>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <h6 class="col-md-5">Surname: </h6>
+                        <h5 class="col-md-7">@emp.Sname</h5>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <h6 class="col-md-5">ID: </h6>
+                        <h5 class="col-md-7">@emp.EmpId</h5>
+                    </div>
+                    <br />
+
+                </div>
+            </div>
+        </div>
+
+        @*main content stuff*@
+        <div class="col-md-8">
+            <div class="card bg-light ">
+                <div class="card-body column">
+
+                    <h4><strong>Institutional Details</strong></h4>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Department: </h5>
+                        <h5 class="col-md-7">@emp.Department</h5>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Position: </h5>
+                        <h5 class="col-md-7">@emp.Position</h5>
+                    </div>
+                    <br />
+                    <br />
+                    <hr />
+
+                    <h4><strong>Academics</strong></h4>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Qualification:</h5>
+                        <h5 class="col-md-7">@emp.Qualification</h5>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Research Interests:</h5>
+                        <h5 class="col-md-7">@emp.Interests</h5>
+                    </div>
+                    <br />
+                    <br />
+                    <hr />
+
+                    <h4><strong>Contact Details</strong></h4>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Email: </h5>
+                        <h5 class="col-md-7">@emp.Email</h5>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <h5 class="col-md-5">Phone: </h5>
+                        <h5 class="col-md-7">@emp.Phone</h5>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

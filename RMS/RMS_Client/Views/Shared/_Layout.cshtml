@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RMS_Client</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/5477aa92a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+
+                @*Toggle Icon for when screen is small*@
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        @*Buttons for when user is signed in, and is not admin user*@
+                        @if (SignInManager.IsSignedIn(User) && (Employee.user.Email != "admin@admin.com"))
+                        {
+                            @*Top Left Title*@
+                            <a class="navbar-brand" asp-area="" asp-controller="Employee" asp-action="Profile">R.M.S</a>
+
+
+                            @*My Profile*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Profile">My Profile</a>
+                            </li>
+
+                            @*Manage Projects*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="MyProjects">My Projects</a>
+                            </li>
+
+
+                            @*My Editorials*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Editorial" asp-action="MyEditorials">My Editorials</a>
+                            </li>
+
+                        }
+                        else if (SignInManager.IsSignedIn(User) && (Employee.user.Email == "admin@admin.com"))
+                        {
+                            @*Top Left Title*@
+                            <a class="navbar-brand" asp-area="" asp-controller="Employee" asp-action="Index">R.M.S</a>
+
+                            @*Employees List Button -- goes to Employee controller and loads Index action which returns table of employees*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+                            </li>
+
+                            @*Projects button shows all projects being done at BIUST*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">All Projects</a>
+                            </li>
+
+                            @*Editorials button to show all editorials*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Editorial" asp-action="Index">All Editorials</a>
+                            </li>
+
+                            @*Report button*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Generate Report</a>
+                            </li>
+                        }
+                        else
+                        {
+                            @*Top Left Title*@
+                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">R.M.S</a>
+                        }
+
+
+                    </ul>
+                    @*Login Buttons -- in separate partial view*@
+                    <partial name="_LoginPartial" />
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*footer section*@
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - RMS_Client - <a href="https://inspiring-heisenberg-b4c703.netlify.app/">Admire Khulumo</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

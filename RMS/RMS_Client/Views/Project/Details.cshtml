@@ -1,0 +1,500 @@
+﻿@{
+    ViewData["Title"] = "Projects Details Page";
+    Project p = ViewBag.Message;
+    //get all employees in db
+    List<Employee> employees = await new APIRequest().getEmployees();
+    //create dynamic modal name
+    string mId = $"del_{p.PId}";
+    mId = mId.Replace(" ", string.Empty);
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Project Details</h1>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <h4>@p.Title</h4>
+
+            <a class="badge badge-pill badge-warning text-white" href="@Url.Action("EditProject", "Project", new { pId = p.PId, title = p.Title, leader = p.Leader, fsource = p.Fsource, famount = p.Famout } )">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                </svg>
+                EDIT
+            </a>
+
+            <a class="badge badge-pill badge-danger" href="#@mId" data-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                </svg>
+                DELETE
+            </a>
+
+        </div>
+
+        <div class="card-body">
+            @*<h5 class="card-title">Special title treatment</h5>*@
+
+
+            <h5>Project ID: @p.PId</h5>
+            <br />
+            <h6>Funding Source: @p.Fsource</h6>
+            <br />
+            <h6>Funding Amount: P @p.Famout</h6>
+            <br />
+            <hr />
+
+            <h5>Project Funders</h5>
+            <div class="row">
+                @{if (p.Funders.Count > 0)
+                    {
+
+                        foreach (Funder fu in p.Funders)
+                        {
+                            string fIdModal = $"del_fun_{fu.FId}";
+
+                            <div class="container col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h6>Name: @fu.Name</h6>
+                                        <h6>Organisation: @fu.Organisation</h6>
+                                        <h6>Email: @fu.Email</h6>
+
+                                        <a class="badge badge-pill badge-warning" href="@Url.Action("EditFunder", "Funder", new { name=fu.Name, organisation=fu.Organisation, email=fu.Email, fId=fu.FId } )">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                            </svg>
+                                        </a>
+
+                                        <a class="badge badge-pill badge-danger" href="#@fIdModal" data-toggle="modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Modal to confirm delete*@
+                            <!-- Button trigger modal -->
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="@fIdModal" tabindex="-1" aria-labelledby="@fIdModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <h5>Are you sure you want to delete the funder "<em>@fu.Name</em>" ?</h5>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                            <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "Funder", new { pId=p.PId ,fId=fu.FId })'">DELETE</button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                    else
+                    {
+                        <h6><em>No funders are associated with this project.</em></h6>
+                    }
+
+                }
+
+            </div>
+            <a href="@Url.Action("AddFunder", "Funder", new {pId=p.PId })">Add Funder</a>
+        </div>
+
+        <div class="card-footer text-muted">
+            Leader: @p.LeadDetails.Fname @p.LeadDetails.Sname, @p.LeadDetails.Qualification
+        </div>
+    </div>
+
+    @*Modal to confirm delete*@
+    <!-- Button trigger modal -->
+    <!-- Modal for deleting a project -->
+    <div class="modal fade" id="@mId" tabindex="-1" aria-labelledby="@mId" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <h5>Are you sure you want to delete the project "<em>@p.Title</em>" ?</h5>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                    <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "Project", new { pId=p.PId })'">DELETE</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+    <hr />
+    <br />
+    <h2>Journal Articles</h2>
+    <br />
+
+    @{if (p.JArticles.Count > 0)
+        {
+        <div class="row">
+
+            @*there are jarticles, loop through all and display*@
+            @foreach (JArticle ja in p.JArticles)
+            {
+                string jaM = $"del_fun_{ja.Jname}_{ja.Title}";
+                jaM = jaM.Replace(" ", string.Empty);
+
+                <div class="container col-md-6">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h4>@ja.Title</h4>
+
+
+                            <a class="badge badge-pill badge-light" href="https://www.researchgate.net/publication/221165871_Reinforcement_learning_in_a_Nutshell" target="_blank">
+                                <img src="/images/read.svg" width="16" height="16" alt="read image" style="color:white">
+                            </a>
+
+                            <a class="badge badge-pill badge-warning" href="@Url.Action("EditJArticle", "JArticle", new { pId = ja.PId, title = ja.Title, jname = ja.Jname, volume = ja.Volume, issue = ja.Issue, pages = ja.Pages, year = ja.Year })">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </a>
+
+                            <a class="badge badge-pill badge-danger" href="#@jaM" data-toggle="modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title"><em>Journal: @ja.Jname</em></h5>
+                            <br />
+                            <h6>Volume: @ja.Volume </h6>
+                            <br />
+                            <h6>Issue: @ja.Issue </h6>
+                            <br />
+                            <h6>Pages: @ja.Pages </h6>
+                            <br />
+                            <h6>Year: @ja.Year </h6>
+                            <br />
+                            <hr />
+                            <h5>Authors:</h5>
+                            <br />
+                            @*get authors of this publication*@
+                            @{ List<Employee> authors = await new APIRequest().getAuthors(ja.Jname, ja.Title, "jArticle");}
+
+                            @*call partial view to display authors, send authors list as the model*@
+
+                            <partial name="_ShowAuthors" model="authors" />
+
+
+                            @*Start small form for adding authors*@
+                            <partial name="_AddAuthor" view-data='@new ViewDataDictionary(ViewData) { { "employees", employees } , { "id1", ja.Jname }, { "id2", ja.Title }, { "type", "jArticle" } }' />
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                @*Modal to confirm delete*@
+
+                <div class="modal fade" id="@jaM" tabindex="-1" aria-labelledby="@jaM" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <h5>Are you sure you want to delete the journal article "<em>@ja.Title</em>" ?</h5>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "JArticle", new { jname=ja.Jname, title=ja.Title })'">DELETE</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            }
+        </div>
+
+        }
+        else
+        {
+            //no jarticles, display message
+            <h6><em>No Journal Articles here yet, add one below.</em></h6>
+        }
+
+    }
+
+    <br />
+    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AddJArticle", "JArticle", new { pId = p.PId})'">
+        <span class="fa fa-plus"></span>
+        Add Journal Article
+    </button>
+
+    <br />
+    <hr />
+    <br />
+
+    <h2>Conference Articles</h2>
+    <br />
+
+    @{if (p.CArticles.Count > 0)
+        {
+        <div class="row">
+
+            @*there are carticles, loop through all and display*@
+            @foreach (CArticle ca in p.CArticles)
+            {
+                string caM = $"del_fun_{ca.Cname}_{ca.Title}";
+                caM = caM.Replace(" ", string.Empty);
+
+                <div class="container col-md-6">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h4>@ca.Title</h4>
+
+
+                            <a class="badge badge-pill badge-light" href="https://www.researchgate.net/publication/221165871_Reinforcement_learning_in_a_Nutshell" target="_blank">
+                                <img src="/images/read.svg" width="16" height="16" alt="read image" style="color:white">
+                            </a>
+
+                            <a class="badge badge-pill badge-warning" href="@Url.Action("EditCArticle", "CArticle", new { pId = ca.PId, title = ca.Title, cname = ca.Cname, publisher = ca.Publisher, location=ca.Location, pages = ca.Pages, year = ca.Year })">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </a>
+
+                            <a class="badge badge-pill badge-danger" href="#@caM" data-toggle="modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </a>
+
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title"><em>Conference: @ca.Cname</em></h5>
+                            <br />
+                            <h6>Pages: @ca.Pages </h6>
+                            <br />
+                            <h6>Publisher: @ca.Publisher </h6>
+                            <br />
+                            <h6>Location: @ca.Location </h6>
+                            <br />
+                            <h6>Year: @ca.Year </h6>
+                            <br />
+                            <hr />
+                            <h5>Authors:</h5>
+                            <br />
+                            @*get authors of this publication*@
+                            @{ List<Employee> authors = await new APIRequest().getAuthors(ca.Cname, ca.Title, "cArticle");}
+
+                            @*call partial view to display authors, send authors list as the model*@
+                            <partial name="_ShowAuthors" model="authors" />
+
+
+                            @*Start small form for adding authors*@
+                            @*@Html.Partial("_AddAuthor", null, new ViewDataDictionary( { {"employees" , employees} });*@
+                            <partial name="_AddAuthor" view-data='@new ViewDataDictionary(ViewData) { { "employees", employees } , { "id1", ca.Cname}, { "id2", ca.Title }, { "type", "cArticle" } }' />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @*Modal to confirm delete*@
+
+                <div class="modal fade" id="@caM" tabindex="-1" aria-labelledby="@caM" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <h5>Are you sure you want to delete the conference article "<em>@ca.Title</em>" ?</h5>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "CArticle", new { cname=ca.Cname, title=ca.Title })'">DELETE</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+
+        }
+        else
+        {
+            //no carticles, display message
+            <h6><em>No Conference Articles here yet, add one below.</em></h6>
+        }
+
+    }
+    <br />
+    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AddCArticle", "CArticle", new { pId = p.PId})'">
+        <span class="fa fa-plus"></span>
+        Add Conference Article
+    </button>
+
+    <br />
+    <hr />
+    <br />
+
+    <h2>Book Chapters</h2>
+    <br />
+
+    @{if (p.BookChapters.Count > 0)
+        {
+        <div class="row">
+
+            @*there are book chapters, loop through all and display*@
+            @foreach (BookChapter bk in p.BookChapters)
+            {
+                string bkM = $"del_fun_{bk.BkTitle}_{bk.ChTitle}";
+                bkM = bkM.Replace(" ", string.Empty);
+
+                <div class="container col-md-6">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h4>@bk.ChTitle</h4>
+
+                            <a class="badge badge-pill badge-light" href="https://www.researchgate.net/publication/221165871_Reinforcement_learning_in_a_Nutshell" target="_blank">
+                                <img src="/images/read.svg" width="16" height="16" alt="read image" style="color:white">
+                            </a>
+
+                            <a class="badge badge-pill badge-warning" href="@Url.Action("EditBookChapter", "BookChapter", new { pId = bk.PId, bkTitle = bk.BkTitle, chTitle = bk.ChTitle, publisher = bk.Publisher, pages = bk.Pages, year = bk.Year })">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil text-white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </a>
+
+                            <a class="badge badge-pill badge-danger" href="#@bkM" data-toggle="modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </a>
+
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title"><em>Book: @bk.BkTitle</em></h5>
+                            <br />
+                            <h6>Pages: @bk.Pages </h6>
+                            <br />
+                            <h6>Publisher: @bk.Publisher </h6>
+                            <br />
+                            <h6>Year: @bk.Year </h6>
+                            <br />
+                            <hr />
+                            <h5>Authors:</h5>
+                            <br />
+                            @*get authors of this publication*@
+                            @{ List<Employee> authors = await new APIRequest().getAuthors(bk.BkTitle, bk.ChTitle, "bookChapter");}
+
+                            @*call partial view to display authors, send authors list as the model*@
+                            <partial name="_ShowAuthors" model="authors" />
+
+
+                            @*Start small form for adding authors*@
+                            @*@Html.Partial("_AddAuthor", null, new ViewDataDictionary( { {"employees" , employees} });*@
+                            <partial name="_AddAuthor" view-data='@new ViewDataDictionary(ViewData) { { "employees", employees } , { "id1", bk.BkTitle}, { "id2", bk.ChTitle }, { "type", "bookChapter" } }' />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @*Modal to confirm delete*@
+
+                <div class="modal fade" id="@bkM" tabindex="-1" aria-labelledby="@bkM" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <h5>Are you sure you want to delete the book chapter "<em>@bk.ChTitle</em>" ?</h5>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="button" value="Submit" class="btn badge-pill badge-warning" onclick="location.href='@Url.Action("Delete", "BookChapter", new { bkTitle=bk.BkTitle, chTitle=bk.ChTitle })'">DELETE</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+        }
+        else
+        {
+            //no book chapters, display message
+            <h6><em>No Book Chapters here yet, add one below.</em></h6>
+        }
+
+    }
+    <br />
+    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AddBookChapter", "BookChapter", new { pId = p.PId})'">
+        <span class="fa fa-plus"></span>
+        Add Book Chapter
+    </button>
+
+</div>
+

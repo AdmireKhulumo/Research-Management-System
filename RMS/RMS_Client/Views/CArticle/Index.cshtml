@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "CArticles Page";
+    List<CArticle> cArticles = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">CArticles</h1>
+
+   @foreach(CArticle ca in cArticles)
+   {
+       @*show sting version of project details*@
+       <p> @ca.ToString() </p>
+       <br/>
+   }
+
+</div>
+

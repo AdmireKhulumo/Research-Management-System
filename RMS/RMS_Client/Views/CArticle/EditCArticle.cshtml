@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Edit Conference Article";
+    List<Project> projects = await new APIRequest().getProjects(Employee.user.EmpId);
+    CArticle ca = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit Conference Article</h1>
+
+    @using (Html.BeginForm("EditCArticle", "CArticle", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        @*Store old title and cname to use to identify record when identifying in db-- use hidden input fields*@
+
+        <input type="hidden" class="form-control" name="old_title" id="old_title" value="@ca.Title" />
+        <input type="hidden" class="form-control" name="old_cname" id="old_cname" value="@ca.Cname" />
+
+        @*Project ID*@
+        <div class="form-group">
+            <label>Select Project</label>
+            <select class="form-control" name="pId" id="pId">
+
+                @*look into projects list, find project matching this ca's pId, show it's title*@
+                <option value=@ca.PId>@projects.Find(p => p.PId == ca.PId).Title</option>
+                @*Remove that object from the projects list*@
+                @projects.RemoveAll(p => p.PId == ca.PId);
+
+                @*loop through the rest of the projects and add to the selection options*@
+                @foreach (Project p in projects)
+                {
+                    <option value=@p.PId>@p.Title</option>
+                }
+
+            </select>
+        </div>
+
+        @*Title*@
+        <div class="form-group">
+            <label>Article Title</label>
+            <input type="text" class="form-control" name="title" id="title" value="@ca.Title" />
+        </div>
+
+        @*Cname*@
+        <div class="form-group">
+            <label>Conference Name</label>
+            <input type="text" class="form-control" name="cname" id="cname" value="@ca.Cname" />
+        </div>
+
+        <div class="row">
+
+            @* Location *@
+            <div class="form-group col-md-6">
+                <label>Location</label>
+                <input type="text" class="form-control" name="location" id="location" value="@ca.Location" />
+            </div>
+
+            @* Publisher *@
+            <div class="form-group col-md-6">
+                <label>Publisher</label>
+                <input type="text" class="form-control" name="publisher" id="publisher" value="@ca.Publisher" />
+            </div>
+
+
+            @* Pages *@
+            <div class="form-group col-md-6">
+                <label>Number of Pages</label>
+                <input type="text" class="form-control" name="pages" id="pages" value="@ca.Pages" />
+            </div>
+
+            @* Year *@
+            <div class="form-group col-md-6">
+                <label>Year of Publication</label>
+                <input type="text" class="form-control" name="year" id="year" value="@ca.Year" />
+            </div>
+
+        </div>
+
+        @*Modal to confirm edit*@
+        <!-- Button trigger modal -->
+        <div>
+
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#confirm">
+                <span class="far fa-save"></span>
+                SAVE CHANGES
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="confirm" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <h5>Are you sure you want to edit details of "<em>@ca.Title</em>" ?</h5>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="submit" value="Submit" class="btn badge-pill badge-warning">CONFIRM</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+    }
+
+</div>
+

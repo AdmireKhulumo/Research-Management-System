@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Add Journal Article";
+    //get projects being done by the logged in employee
+    List<Project> projects = await new APIRequest().getProjects(Employee.user.EmpId);
+    //get project Id
+    int pId = (int)ViewBag.PId;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Journal Article</h1>
+
+    @using (Html.BeginForm("AddJArticle", "JArticle", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        @*Project ID*@
+        <div class="form-group">
+            <label>Select Project</label>
+            <select class="form-control" name="pId" id="pId">
+                @{
+                    //get current project's details
+                    Project currProj = projects.Find(p => p.PId == pId);
+                 }
+                <option value=@currProj.PId>@currProj.Title</option>
+                @*Remove that object from the projects list*@
+                @projects.RemoveAll(p => p.PId == pId);
+
+                @*loop through the rest of the projects and add to the selection options*@
+                @foreach (Project p in projects)
+                {
+                    <option value=@p.PId>@p.Title</option>
+                }
+            </select>
+        </div>
+
+        @*Title*@
+        <div class="form-group">
+            <label>Article Title</label>
+            <input type="text" class="form-control" name="title" id="title" />
+        </div>
+
+        @*Jname*@
+        <div class="form-group">
+            <label>Journal Name</label>
+            <input type="text" class="form-control" name="jname" id="jname" />
+        </div>
+
+        <div class="row">
+
+        @* Volume *@
+        <div class="form-group col-md-6">
+            <label>Volume Number</label>
+            <input type="text" class="form-control" name="volume" id="volume" />
+        </div>
+
+        @* Issue *@
+        <div class="form-group col-md-6">
+            <label>Issue Number</label>
+            <input type="text" class="form-control" name="issue" id="issue" />
+        </div>
+
+        @* Pages *@
+        <div class="form-group col-md-6">
+            <label>Number of Pages</label>
+            <input type="text" class="form-control" name="pages" id="pages" />
+        </div>
+
+        @* Year *@
+        <div class="form-group col-md-6">
+            <label>Year of Publication</label>
+            <input type="text" class="form-control" name="year" id="year" />
+        </div>
+
+         </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" value="Submit"><span class="fa fa-plus"></span> A D D</button>
+        </div>
+    </form>
+</div>
+    }
+
+</div>
+

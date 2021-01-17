@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Add Employee";
+
+    //create and add departments
+    List<string> depts = new List<string>();
+    depts.Add("Computer Science and Information Systems");
+    depts.Add("Forensic Science");
+    depts.Add("Mechanical Engineering");
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Employee</h1>
+
+    @using (Html.BeginForm("AddEmployee", "Employee", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+
+        @*Names*@
+        <div class="row">
+            <div class="form-group col-md-6">
+                <div class="column">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="fname" id="fname" placeholder="John" />
+                </div>
+            </div>
+
+            <div class="column col-md-6">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="sname" id="sname" placeholder="Doe" />
+            </div>
+        </div>
+
+
+        @*Institutional Info*@
+        <div class="form-group">
+            <label>Position</label>
+            <input type="text" class="form-control" name="position" id="position" placeholder="Senior Lecturer" />
+        </div>
+
+        <div class="form-group">
+            <label>Department</label>
+            <select class="form-control" name="department" id="department">
+                @foreach (string dept in depts)
+                {
+                    <option value=@dept>@dept</option>
+                }
+            </select>
+        </div>
+
+        @*Acadmemic info*@
+        <div class="form-group">
+            <label>Highest Qualificaton</label>
+            <input type="text" class="form-control" name="qualification" id="qualification" placeholder="PhD, Harvard University" />
+        </div>
+
+        <div class="form-group">
+            <label>Research Interests</label>
+            <textarea class="form-control" name="interests" id="interests" placeholder="Analysis of qauntum matter using Convolutional Neural Networks"></textarea>
+        </div>
+
+
+        @*Contact info*@
+        <div class="row">
+            <div class="form-group col-md-6">
+                <div class="column">
+                    <label>Email Address</label>
+                    <input type="text" class="form-control" name="email" id="email" placeholder="jd@biust.ac.bw" />
+                </div>
+            </div>
+
+            <div class="column col-md-6">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="+267 74103071" />
+            </div>
+        </div>
+
+        <input type="hidden" class="form-control" name="save" id="save" value="true" />
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" value="Submit"><span class="fa fa-plus"></span> A D D</button>
+        </div>
+
+    </form>
+</div>
+    }
+
+</div>
+

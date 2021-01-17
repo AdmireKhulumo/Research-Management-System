@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Edit Journal Article";
+    //get projects being done by the logged in employee
+    List<Project> projects = await new APIRequest().getProjects(Employee.user.EmpId);
+    JArticle ja = ViewBag.Message;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit Journal Article</h1>
+
+    @using (Html.BeginForm("EditJArticle", "JArticle", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        @*Store old title and jname to use to identify record when identifying -- use hidden input fields*@
+
+        <input type="hidden" class="form-control" name="old_title" id="old_title" value="@ja.Title" />
+        <input type="hidden" class="form-control" name="old_jname" id="old_jname" value="@ja.Jname" />
+
+        @*Project ID*@
+        <div class="form-group">
+            <label>Select Project</label>
+            <select class="form-control" name="pId" id="pId">
+
+                @*look into projects list, find project matching this ja's pId, show it's title*@
+                <option value=@ja.PId>@projects.Find(p => p.PId == ja.PId).Title</option>
+                @*Remove that object from the projects list*@
+                @projects.RemoveAll(p => p.PId == ja.PId);
+
+                @*loop through the rest of the projects and add to the selection options*@
+                @foreach (Project p in projects)
+                {
+                    <option value=@p.PId>@p.Title</option>
+                }
+
+            </select>
+        </div>
+
+        @*Title*@
+        <div class="form-group">
+            <label>Article Title</label>
+            <input type="text" class="form-control" name="title" id="title" value="@ja.Title" />
+        </div>
+
+        @*Jname*@
+        <div class="form-group">
+            <label>Journal Name</label>
+            <input type="text" class="form-control" name="jname" id="jname" value="@ja.Jname" />
+        </div>
+
+        <div class="row">
+
+            @* Volume *@
+            <div class="form-group col-md-6">
+                <label>Volume Number</label>
+                <input type="text" class="form-control" name="volume" id="volume" value="@ja.Volume" />
+            </div>
+
+            @* Issue *@
+            <div class="form-group col-md-6">
+                <label>Issue Number</label>
+                <input type="text" class="form-control" name="issue" id="issue" value="@ja.Issue" />
+            </div>
+
+            @* Pages *@
+            <div class="form-group col-md-6">
+                <label>Number of Pages</label>
+                <input type="text" class="form-control" name="pages" id="pages" value="@ja.Pages" />
+            </div>
+
+            @* Year *@
+            <div class="form-group col-md-6">
+                <label>Year of Publication</label>
+                <input type="text" class="form-control" name="year" id="year" value="@ja.Year" />
+            </div>
+
+        </div>
+
+        @*Modal to confirm edit*@
+        <!-- Button trigger modal -->
+        <div>
+
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#confirm">
+                <span class="far fa-save"></span>
+                SAVE CHANGES
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="confirm" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <h5>Are you sure you want to edit details of "<em>@ja.Title</em>" ?</h5>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="submit" value="Submit" class="btn badge-pill badge-warning">CONFIRM</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+    }
+
+</div>
+

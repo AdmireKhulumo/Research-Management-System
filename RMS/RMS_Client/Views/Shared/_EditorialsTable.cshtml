@@ -1,0 +1,41 @@
+﻿@{
+    //get data from the viewdata component
+    List<Editorial> editorials = (List<Editorial>)this.ViewData["editorials"];
+
+}
+
+<table class="table table-hover table-dark table-bordered table-responsive">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Employee(s)</th>
+            <th scope="col">Activity Description</th>
+            <th scope="col">Publication</th>
+            <th scope="col">Url</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            foreach (Editorial ed in editorials)
+            {
+                string doers = "";
+                foreach (Employee doer in ed.Doers)
+                {
+                    doers += $"{doer.Fname} {doer.Sname}, ";
+                }
+                <tr>
+                    @*<th scope="row">1</th>*@
+                    <td><strong>@doers</strong></td>
+                    <td>@ed.Activity</td>
+                    <td>@ed.Publication</td>
+                    <td>@ed.Url</td>
+                    <td>@ed.Date</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+

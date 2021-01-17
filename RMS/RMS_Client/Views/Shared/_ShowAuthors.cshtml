@@ -1,0 +1,23 @@
+﻿@model List<Employee>
+
+@*Check if there are authors in the list*@
+
+@if (Model.Count > 0)
+{
+    <div class="row">
+        @*there are authors, display them*@
+        @{int i = 1;
+            foreach (Employee auth in Model)
+            {
+                <p class="col-md-6">@i: @auth.Fname @auth.Sname</p>
+                i = i + 1;
+            }
+
+        }
+    </div>
+}
+else
+{
+    //no authors, show message
+    <p>No Authors added yet.</p>
+}

@@ -1,0 +1,28 @@
+﻿@{
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager
+    ViewData["Title"] = "Home Page";
+    string bkg = "/images/bkg.jpg";
+}
+
+<head>
+    <style type="text/css">
+        body {
+            background-image: url(@bkg);
+            background-repeat:no-repeat;
+            background-size:cover;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<div class="container-fluid w-100 h-100 col-md-12">
+    <br />
+    <br />
+    <br />
+    <br />
+    <h1 class="text-white display-1"> Research Management System</h1>
+</div>
+
+

@@ -1,0 +1,104 @@
+﻿@model RMS_Client.Models.Project;
+@{
+    ViewData["Title"] = "Edit Project";
+    List<Employee> emps = await new APIRequest().getEmployees();
+    List<Funder> funders = await new APIRequest().getFunders();
+    //store passed project object
+    Project p = ViewBag.Message;
+    //get details of the current leader using their empId stored in the p.leader variable
+    p.LeadDetails = emps.Find(emp => emp.EmpId == p.Leader);
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit Project</h1>
+
+    @using (Html.BeginForm("EditProject", "Project", FormMethod.Post))
+    {
+<div class="col-md-8 col-lg-8 container">
+
+    <form>
+        @*store old project Id in hidden input field for identifying the project being edited*@
+        <input type="hidden" class="form-control" name="pId" id="pId" value="@p.PId" />
+        @*save value passed when changes are made...tells controller to update values in the database*@
+        <input type="hidden" class="form-control" name="save" id="save" value="true" />
+
+        <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" class="form-control" name="title" id="title" value="@p.Title" />
+        </div>
+
+        <div class="form-group">
+            <label>Project Leader</label>
+            <select class="form-control" name="leader" id="leader">
+                @*Add option with current project leader*@
+                <option value="@p.Leader">@p.LeadDetails.Fname @p.LeadDetails.Sname </option>
+
+                @*remove that employee from list of employees -- discard output*@
+                @emps.RemoveAll(emp => emp.EmpId == p.Leader);
+
+                @*loop through the rest of the employees and add as options*@
+                @foreach (Employee emp in emps)
+                {
+                    <option value=@emp.EmpId>@emp.Fname @emp.Sname</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Funding Source</label>
+            <select class="form-control" name="fsource" id="fsource">
+                <option value="@p.Fsource">@p.Fsource</option>
+                <option value="BIUST">BIUST</option>
+                <option value="Private">Private</option>
+                <option value="Public">Public</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label>Funding Amount</label>
+            <input type="text" class="form-control" name="famount" id="famount" value="@p.Famout" />
+        </div>
+
+        @*Modal to confirm edit*@
+        <!-- Button trigger modal -->
+        <div>
+
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#confirm">
+                <span class="far fa-save"></span>
+                SAVE CHANGES
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="confirm" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <h5>Are you sure you want to edit details of "<em>@p.Title</em>" ?</h5>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <button type="button" class="btn btn badge-pill badge-light" data-dismiss="modal">CANCEL</button>
+                                <button type="submit" value="Submit" class="btn badge-pill badge-warning">CONFIRM</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+    }
+
+</div>
+
