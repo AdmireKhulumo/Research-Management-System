@@ -1,19 +1,13 @@
-﻿<Properties StartupConfiguration="{F87ACE19-E7A4-4BFF-AB59-2F46B250550A}|Default">
+﻿<Properties StartupConfiguration="{D6A6B616-7800-491B-8DD4-8B48A36323C1}|Default">
   <MonoDevelop.Ide.ItemProperties.RMS__Client PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="RMS_API/Controllers/EmployeeController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="RMS_Client/Controllers/BookChapterController.cs">
     <Files>
-      <File FileName="RMS_API/Controllers/EmployeeController.cs" Line="90" Column="52" />
+      <File FileName="RMS_Client/Controllers/BookChapterController.cs" Line="16" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="RMS" expanded="True">
-            <Node name="RMS_API" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="EmployeeController.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
+          <Node name="RMS" expanded="True" />
         </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">

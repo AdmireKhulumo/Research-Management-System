@@ -8,7 +8,7 @@ namespace RMS_Client.Models
 
         //stores currently logged in employee user...details added when he/she logs in via navbar
         public static Employee user = new Employee();
-
+         
         //default constructor 
         public Employee()
         {
