@@ -1,5 +1,5 @@
 # Research Management System
- A fullstack system for managing research conducted by staff members in an organisation.
+ A fullstack system for managing research conducted by staff members of an organisation.
  
 ## Description
 
